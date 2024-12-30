@@ -1,0 +1,58 @@
+.menuScreen {
+  height: 100vh; /* Высота блока — 100% от высоты экрана */
+  background-image: url('../public/img/mainScreen.webp');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.menuBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  position: absolute;
+  right: 60px;
+  top: 40%;
+  transform: translateY(-50%);
+  gap: 20px;
+}
+
+.menuBlock button {
+  background-color: #3981c7;
+  color: white;
+  border: 2px solid #3981c7;
+  border-radius: 25px;
+  padding: 12px 24px;
+  font-size: 24px;
+  font-family: "Comic Sans MS";
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.menuBlock button:hover {
+  background-color: #0055a5;
+  border-color: #0055a5;
+}
+
+.controls{
+  display: flex;
+  position: absolute;
+  top: 90%;
+  left: 20px;
+}
+
+.controls button{
+  background-color: #3981c7;
+  background-repeat: no-repeat;
+  font-size: 40px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: #3981c7 solid 8px;
+  border-radius: 50%;
+}
+
+.controls button:hover{
+  background-color: #0055a5;
+  border-color: #0055a5;
+}
