@@ -6,7 +6,7 @@ function MenuScreen(props){
             <MenuBlock toBar = {props.toBarScreen}/>
             <Controls/>
         </div>
-    )};
+    )}
 
 function MenuBlock(props){
     return (
@@ -15,13 +15,13 @@ function MenuBlock(props){
             <button> Загрузить </button>
             <button> Авторы </button>
         </div>
-    )};
+    )}
 
 function Controls() {
     return(
         <div className = 'controls'>
             <button></button>
         </div>
-    )};
+    )}
 
 export default MenuScreen
