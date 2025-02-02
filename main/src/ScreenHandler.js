@@ -1,29 +1,31 @@
-import {useState} from "react";
+import { useState } from "react";
 import MenuScreen from "./screens/MenuScreen";
 import BarScreen from "./screens/BarScreen";
 import CrossroadScreen from "./screens/CrossroadScreen";
 
-function ScreenHandler(){
-    let [menuState, setMenuState] = useState('menu');
-    let screen;
+function ScreenHandler() {
+    const [screen, setScreen] = useState("menu");
 
-    switch (menuState) {
-        case 'menu':
-            screen = <MenuScreen toBarScreen = {() => {setMenuState('bar')}}/>;
-            break;
-        case 'bar':
-            screen = <BarScreen toMenuScreen = {() => {setMenuState('menu')}}
-                                toCrossroadScreen = {() => {setMenuState('crossroad')}}/>
-            break;
-        case 'crossroad':
-            screen = <CrossroadScreen toMenuScreen = {() => {setMenuState('menu')}}
-                                      toBarScreen = {() => {setMenuState('bar')}}/>
+    if (screen === "menu"){
+        return <MenuScreen toBarScreen ={() => setScreen("bar")}/>;
     }
 
-    return(
-            <div>
-                {screen}
-            </div>
+    if (screen === "bar"){
+        return <BarScreen
+            toMenuScreen = {() => setScreen("menu")}
+            toCrossroadScreen = {() => setScreen("crossroad")}
+        />;
+    }
+
+    if (screen === "crossroad"){
+        return <CrossroadScreen
+            toMenuScreen = {() => setScreen("menu")}
+            toBarScreen = {() => setScreen("bar") }
+        />;
+    }
+
+    return (
+        <div> {screen} </div>
     )
 }
 
