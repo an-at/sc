@@ -156,11 +156,11 @@ function Timer( {time, setTime} ){
                         updatedTime.minutes -= 1;
                         updatedTime.seconds += 59;
                     }
-                };
+                }
                 if (updatedTime.minutes === 0 && updatedTime.seconds === 0){
                     updatedTime.message = 'Time is up';
                     clearInterval(interval);
-                };
+                }
 
                 return updatedTime;
             }
