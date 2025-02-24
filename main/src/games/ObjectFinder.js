@@ -1,42 +1,63 @@
 import "../games/ObjectFinder.css";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /*
-5. Доработки: логика таймера - изменить: сделать передачу в секунды, логика окончания смотрится по секунда
-затем преобразование в минуты для рендера
+Вопросы
+1. Как правильнее работать с таймером: очищать интервал внутри функции таймера или вызывать очищение снаружи
+Код при очищении интервала изнутри
+    const interval = setInterval(() => {
+      setCurrentTime((prevTime) => {
+        if (prevTime === 0 || state === "finish") {
+          clearInterval(interval);
+          return prevTime;
+        }
+        return prevTime - 1;
+      });
+    }, 1000);
 
-6. Доработки: убрать из стейта сообщение и ложную таску
+Код при очищении снаружу
+  useEffect(() => {
+    if (uncompletedTasks.length > 0 && currentTime === 0) {
+      setState("fail");
+      clearInterval(intervalId.current);
+      intervalId.current = null;
+    }
+    if (uncompletedTasks.length === 0 && currentTime > 0) {
+      setState("success");
+      clearInterval(intervalId.current);
+      intervalId.current = null;
+    }
+  }, [uncompletedTasks, currentTime]);
 
-7. посмотреть useEfect и сделать завершеине игры при истечении таймера
 */
 
 export default function Board() {
-  const objects = [
+  const items = [
     {
       name: "grey square",
-      src: "https://placehold.co/100x100/grey/white",
+      src: "https://placehold.co/100x100/grey/white?text=glasses",
       position: {
         position: "absolute",
-        top: 70 + "px",
-        left: 50 + "px",
+        top: 70 + "%",
+        left: 50 + "%",
       },
     },
     {
       name: "green square",
-      src: "https://placehold.co/100x100/green/white",
+      src: "https://placehold.co/100x100/green/white?text=cat",
       position: {
         position: "absolute",
-        top: 190 + "px",
-        left: 150 + "px",
+        top: 10 + "%",
+        left: 10 + "%",
       },
     },
     {
       name: "yellow square",
-      src: "https://placehold.co/100x100/yellow/white",
+      src: "https://placehold.co/100x100/yellow/grey?text=sofa",
       position: {
         position: "absolute",
-        top: 150 + "px",
-        left: 90 + "px",
+        top: 15 + "%",
+        left: 70 + "%",
       },
     },
   ];
@@ -44,126 +65,150 @@ export default function Board() {
     {
       index: 0,
       description: "Найди серый квадрат",
-      objectName: "grey square",
+      itemName: "grey square",
       isCompleted: false,
     },
     {
       index: 1,
-      description: "Найди красный квадрат",
-      objectName: "red square",
+      description: "Найди зеленый квадрат",
+      itemName: "green square",
       isCompleted: false,
     },
     {
       index: 2,
       description: "Найди желтый квадрат",
-      objectName: "yellow square",
+      itemName: "yellow square",
       isCompleted: false,
     },
-    // {
-    //   index: 3,
-    //   description: "Все задания выполнены",
-    //   objectName: "lastTask",
-    //   isCompleted: false,
-    // },
   ];
+  const npc = "/img/characters/gran_without_glasses.png";
+  const dialogueBox = "/img/dialogue_boxes/dialogue_box_round.png";
 
-  const [history, setHistory] = useState(tasks.slice(0));
-  const [uncompletedTasks, setUncompletedTasks] = useState(tasks.slice(0));
-  const [currentTime, setCurrentTime] = useState({
-    minutes: 1,
-    seconds: 5,
-    message: null,
-  });
-
-  function clickHandler(obj) {
-    console.log(obj);
-    if (uncompletedTasks.length > 1) {
-      const updatedList = uncompletedTasks.slice(1);
-      setUncompletedTasks(updatedList);
+  // Блок с состоянием игры
+  const [state, setState] = useState("readyToGame");
+  useEffect(() => {
+    if (state === "game") {
+      startTimer();
     }
-    setHistory((prevHistory) => {
-      let updatedHistory = prevHistory;
-      let index = prevHistory.length - uncompletedTasks.length;
-      updatedHistory[index].isCompleted = true;
-      return updatedHistory;
-    });
+  }, [state]);
+  function startGame() {
+    setState("game");
   }
 
-  // добавить условие
-  return (
-    <>
-      {objects.map((obj) => (
-        <Object
-          key={obj.name}
-          name={obj.name}
-          imgSrc={obj.src}
-          position={obj.position}
-          clickHandler={() => {
-            clickHandler(obj);
-          }}
-        />
-      ))}
+  // Блок выполнения задания
+  const [history, setHistory] = useState(tasks.slice(0));
+  const [uncompletedTasks, setUncompletedTasks] = useState(tasks.slice(0));
+  function clickHandler(itm) {
+    if (uncompletedTasks[0].itemName === itm.name) {
+      // if (uncompletedTasks.length > 0) {
+      const updatedList = uncompletedTasks.slice(1);
+      setUncompletedTasks(updatedList);
+      // }
+      setHistory((prevHistory) => {
+        let updatedHistory = prevHistory;
+        let index = prevHistory.length - uncompletedTasks.length;
+        updatedHistory[index].isCompleted = true;
+        return updatedHistory;
+      });
+    }
+  }
 
-      <Task uncompletedTasks={uncompletedTasks} clickHandler={clickHandler} />
-
-      <Timer time={currentTime} setTime={setCurrentTime} />
-    </>
-  );
-}
-
-function Npc({ imgCharacter }) {
-  return <img src={imgCharacter} className="npc" />;
-}
-
-function Timer({ time, setTime }) {
-  const currentTime = time;
-
+  // Блок таймера
+  const [currentTime, setCurrentTime] = useState(5);
+  useEffect(() => {
+    if (uncompletedTasks.length > 0 && currentTime === 0) {
+      setState("fail");
+      clearInterval(intervalId.current);
+      intervalId.current = null;
+    }
+    if (uncompletedTasks.length === 0 && currentTime > 0) {
+      setState("success");
+      clearInterval(intervalId.current);
+      intervalId.current = null;
+    }
+  }, [uncompletedTasks, currentTime]);
+  const intervalId = useRef(null);
   function startTimer() {
-    const interval = setInterval(
-      () =>
-        setTime((prevTime) => {
-          const updatedTime = { ...prevTime };
-          if (updatedTime.minutes !== 0 || updatedTime.seconds !== 0) {
-            if (updatedTime.seconds > 0) {
-              updatedTime.seconds -= 1;
-            } else {
-              updatedTime.minutes -= 1;
-              updatedTime.seconds += 59;
-            }
-          }
-          if (updatedTime.minutes === 0 && updatedTime.seconds === 0) {
-            updatedTime.message = "Time is up";
-            clearInterval(interval);
-          }
-
-          return updatedTime;
-        }),
+    intervalId.current = setInterval(
+      () => setCurrentTime((prevTime) => prevTime - 1),
       1000,
     );
   }
 
-  const renderValue =
-    currentTime.message === null ? (
-      <p>
-        {" "}
-        {currentTime.minutes} min {currentTime.seconds} sec
-      </p>
-    ) : (
-      <p> {currentTime.message} </p>
+  // Блок рендера
+  if (state === "readyToGame") {
+    return (
+      <>
+        <p> Are you ready ?</p>
+        <button onClick={startGame}> start </button>
+      </>
     );
+  }
+  if (state === "game") {
+    return (
+      <>
+        {items.map((itm) => (
+          <Item
+            key={itm.name}
+            name={itm.name}
+            imgSrc={itm.src}
+            position={itm.position}
+            clickHandler={() => {
+              clickHandler(itm);
+            }}
+          />
+        ))}
 
+        <Task uncompletedTasks={uncompletedTasks} clickHandler={clickHandler} />
+
+        <Timer time={currentTime} />
+
+        <Npc imgCharacter={npc} dialogueBox={dialogueBox} />
+      </>
+    );
+  }
+  if (state === "success") {
+    return (
+      <>
+        <p> You won</p>
+      </>
+    );
+  }
+  if (state === "fail") {
+    return (
+      <>
+        <p> You failed</p>
+      </>
+    );
+  }
+}
+
+function Npc({ imgCharacter, dialogueBox }) {
   return (
     <>
-      {/*сейчас при нажатии на таймер несколько раз он будет каждый раз ускоряться, я не стал это обрабатывать так как
-            я сам в игре буду управлять стартом и стопом таймера, поэтому необходимости в обработке нет*/}
-      <button onClick={startTimer}> Start timer </button>
-      {renderValue}
+      <img src={imgCharacter} className="npc" />
+      <img src={dialogueBox} className="dialogueBox" />
     </>
   );
 }
 
-function Task({ uncompletedTasks, clickHandler }) {
-  if (uncompletedTasks.length === 1) {
+function Timer({ time }) {
+  const minutes = Math.trunc(time / 60);
+  const seconds = time % 60;
+  const renderValue =
+    time > 0 ? (
+      <p>
+        {minutes}:{seconds}
+      </p>
+    ) : (
+      <p> Time is out</p>
+    );
+
+  return <>{renderValue}</>;
+}
+
+function Task({ uncompletedTasks }) {
+  if (uncompletedTasks.length === 0) {
     return (
       <>
         <p className="task"> Все задания выполнены</p>
@@ -178,12 +223,11 @@ function Task({ uncompletedTasks, clickHandler }) {
         {" "}
         {currentTask.description}{" "}
       </p>
-      <button onClick={clickHandler}> Click to complete task </button>
     </>
   );
 }
 
-function Object({ name, imgSrc, position, clickHandler }) {
+function Item({ name, imgSrc, position, clickHandler }) {
   return (
     <>
       <img
@@ -192,6 +236,7 @@ function Object({ name, imgSrc, position, clickHandler }) {
         className="object"
         id={name}
         onClick={clickHandler}
+        alt="Old women img"
       />
     </>
   );

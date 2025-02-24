@@ -1,4 +1,19 @@
 .task {
     position: absolute;
-    top: 500px;
+    top: 25%;
+    right: 70%;
+}
+
+.npc {
+    position: absolute;
+    top: 23%;
+    right: 72%;
+    width: 500px;
+}
+
+.dialogueBox {
+    position: absolute;
+    top: 20%;
+    right: 66%;
+    width: 19%;
 }
