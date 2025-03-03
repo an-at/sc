@@ -28,8 +28,16 @@ import { useEffect, useRef, useState } from "react";
       intervalId.current = null;
     }
   }, [uncompletedTasks, currentTime]);
-
 */
+/*
+1) При первом попадании на экран происходит диалог с нпс
+- изображение нпс
+- фон заблюрен
+- у нпс блок с диалогом
+- в блоке с диалогом есть кнопка "вперед"
+2) В диалоге игрок подтверждает готовность начать игру
+3) Начинается игра
+ */
 
 export default function Board() {
   const items = [
@@ -81,8 +89,7 @@ export default function Board() {
       isCompleted: false,
     },
   ];
-  const npc = "/img/characters/gran_without_glasses.png";
-  const dialogueBox = "/img/dialogue_boxes/dialogue_box_round.png";
+  const dialogueTexts = ["text1", "text2", "text3", "text4", "text5"];
 
   // Блок с состоянием игры
   const [state, setState] = useState("readyToGame");
@@ -93,6 +100,13 @@ export default function Board() {
   }, [state]);
   function startGame() {
     setState("game");
+  }
+
+  //Блок диалогов
+  const [dialogueText, setDialogueText] = useState(dialogueTexts.slice(0));
+  function nextDialogueText() {
+    const newDialogueText = dialogueText.slice(1);
+    setDialogueText(newDialogueText);
   }
 
   // Блок выполнения задания
@@ -114,7 +128,7 @@ export default function Board() {
   }
 
   // Блок таймера
-  const [currentTime, setCurrentTime] = useState(5);
+  const [currentTime, setCurrentTime] = useState(100);
   useEffect(() => {
     if (uncompletedTasks.length > 0 && currentTime === 0) {
       setState("fail");
@@ -139,14 +153,25 @@ export default function Board() {
   if (state === "readyToGame") {
     return (
       <>
-        <p> Are you ready ?</p>
-        <button onClick={startGame}> start </button>
+        <div className="room">
+          <div className="npcAndDialogue">
+            <Npc />
+            <Dialogue
+              dialogueTexts={dialogueText}
+              clickHandler={startGame}
+              dialogueHandler={nextDialogueText}
+            />
+          </div>
+        </div>
       </>
     );
   }
   if (state === "game") {
     return (
       <>
+        <Npc state={state} />
+        <Task uncompletedTasks={uncompletedTasks} clickHandler={clickHandler} />
+        <Timer time={currentTime} />
         {items.map((itm) => (
           <Item
             key={itm.name}
@@ -158,12 +183,6 @@ export default function Board() {
             }}
           />
         ))}
-
-        <Task uncompletedTasks={uncompletedTasks} clickHandler={clickHandler} />
-
-        <Timer time={currentTime} />
-
-        <Npc imgCharacter={npc} dialogueBox={dialogueBox} />
       </>
     );
   }
@@ -183,28 +202,29 @@ export default function Board() {
   }
 }
 
-function Npc({ imgCharacter, dialogueBox }) {
+function Npc({ option }) {
+  const renderOptrion = option
+    ? "/img/characters/susie_dialogue_glasses.png"
+    : "/img/characters/susie_dialogue.png";
+
   return (
     <>
-      <img src={imgCharacter} className="npc" />
-      <img src={dialogueBox} className="dialogueBox" />
+      <img src={renderOptrion} className="npc" alt="npc" />
     </>
   );
 }
 
-function Timer({ time }) {
-  const minutes = Math.trunc(time / 60);
-  const seconds = time % 60;
-  const renderValue =
-    time > 0 ? (
-      <p>
-        {minutes}:{seconds}
-      </p>
-    ) : (
-      <p> Time is out</p>
-    );
-
-  return <>{renderValue}</>;
+function Dialogue({ clickHandler, dialogueHandler, dialogueTexts }) {
+  return (
+    <div className="dialogue">
+      <span> {dialogueTexts[0]} </span>
+      {dialogueTexts.length > 1 ? (
+        <button onClick={dialogueHandler}> next dialogue </button>
+      ) : (
+        <button onClick={clickHandler}> start </button>
+      )}
+    </div>
+  );
 }
 
 function Task({ uncompletedTasks }) {
@@ -225,6 +245,21 @@ function Task({ uncompletedTasks }) {
       </p>
     </>
   );
+}
+
+function Timer({ time }) {
+  const minutes = Math.trunc(time / 60);
+  const seconds = time % 60;
+  const renderValue =
+    time > 0 ? (
+      <p>
+        {minutes}:{seconds}
+      </p>
+    ) : (
+      <p> Time is out</p>
+    );
+
+  return <>{renderValue}</>;
 }
 
 function Item({ name, imgSrc, position, clickHandler }) {
