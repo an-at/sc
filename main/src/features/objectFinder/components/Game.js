@@ -1,4 +1,4 @@
-import "../styles/ObjectFinder.css";
+import "../styles/Game.css";
 import { useEffect, useRef, useState } from "react";
 import { items, tasks, dialogueTexts } from "../../../data/objectFinderData.js";
 import Task from "./Task.js";
@@ -124,20 +124,27 @@ export default function Game() {
   if (state === "game") {
     return (
       <>
-        <Npc state={state} />
-        <Task uncompletedTasks={uncompletedTasks} clickHandler={clickHandler} />
-        <Timer time={currentTime} />
-        {items.map((itm) => (
-          <Item
-            key={itm.name}
-            name={itm.name}
-            imgSrc={itm.src}
-            position={itm.position}
-            clickHandler={() => {
-              clickHandler(itm);
-            }}
-          />
-        ))}
+        <div className="room">
+          <div className="npcAndDialogue">
+            <Npc />
+            <Task
+              uncompletedTasks={uncompletedTasks}
+              clickHandler={clickHandler}
+            />
+          </div>
+          <Timer time={currentTime} />
+          {items.map((itm) => (
+            <Item
+              key={itm.name}
+              name={itm.name}
+              imgSrc={itm.src}
+              position={itm.position}
+              clickHandler={() => {
+                clickHandler(itm);
+              }}
+            />
+          ))}
+        </div>
       </>
     );
   }

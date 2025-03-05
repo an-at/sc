@@ -10,10 +10,10 @@ export default function Task({ uncompletedTasks }) {
   const currentTask = uncompletedTasks[0];
   return (
     <>
-      <p key={currentTask.index} className="task">
+      <div key={currentTask.index} className="task">
         {" "}
         {currentTask.description}{" "}
-      </p>
+      </div>
     </>
   );
 }

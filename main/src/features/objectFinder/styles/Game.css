@@ -8,26 +8,30 @@
     background-repeat: no-repeat;
 }
 
-.task {
-    position: absolute;
-    top: 25%;
-    right: 70%;
-}
-
 .npcAndDialogue {
     position: relative;
     min-height: 400px;
     top: 46%;
 }
 
-.dialogue {
+.dialogue, .task {
     position: absolute;
     left: 17%;
-    bottom: 15%
+    bottom: 15%;
+    color: white;
+}
+
+.timer{
+    position: relative;
+    width: 30px;
+    top: 32%;
+    left: 50%;
 }
 
 .npc {
     position: absolute;
     width: 800px;
 }
+
+
 
