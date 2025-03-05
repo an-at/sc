@@ -1,13 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import Game from "./games/ObjectFinder.js";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./assets/styles/index.css";
+import Game from "./features/objectFinder/components/Game.js";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-    <React.StrictMode>
-      <Game />
-    </React.StrictMode>
+  <React.StrictMode>
+    <Game />
+  </React.StrictMode>,
 );
 
 // If you want to start measuring performance in your app, pass a function

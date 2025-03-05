@@ -1,5 +1,11 @@
-import "../games/ObjectFinder.css";
+import "../styles/ObjectFinder.css";
 import { useEffect, useRef, useState } from "react";
+import { items, tasks, dialogueTexts } from "../../../data/objectFinderData.js";
+import Task from "./Task.js";
+import Item from "./Item.js";
+import Dialogue from "./Dialogue.js";
+import Timer from "./Timer.js";
+import Npc from "./Npc.js";
 
 /*
 Вопросы
@@ -39,58 +45,7 @@ import { useEffect, useRef, useState } from "react";
 3) Начинается игра
  */
 
-export default function Board() {
-  const items = [
-    {
-      name: "grey square",
-      src: "https://placehold.co/100x100/grey/white?text=glasses",
-      position: {
-        position: "absolute",
-        top: 70 + "%",
-        left: 50 + "%",
-      },
-    },
-    {
-      name: "green square",
-      src: "https://placehold.co/100x100/green/white?text=cat",
-      position: {
-        position: "absolute",
-        top: 10 + "%",
-        left: 10 + "%",
-      },
-    },
-    {
-      name: "yellow square",
-      src: "https://placehold.co/100x100/yellow/grey?text=sofa",
-      position: {
-        position: "absolute",
-        top: 15 + "%",
-        left: 70 + "%",
-      },
-    },
-  ];
-  const tasks = [
-    {
-      index: 0,
-      description: "Найди серый квадрат",
-      itemName: "grey square",
-      isCompleted: false,
-    },
-    {
-      index: 1,
-      description: "Найди зеленый квадрат",
-      itemName: "green square",
-      isCompleted: false,
-    },
-    {
-      index: 2,
-      description: "Найди желтый квадрат",
-      itemName: "yellow square",
-      isCompleted: false,
-    },
-  ];
-  const dialogueTexts = ["text1", "text2", "text3", "text4", "text5"];
-
+export default function Game() {
   // Блок с состоянием игры
   const [state, setState] = useState("readyToGame");
   useEffect(() => {
@@ -200,79 +155,4 @@ export default function Board() {
       </>
     );
   }
-}
-
-function Npc({ option }) {
-  const renderOptrion = option
-    ? "/img/characters/susie_dialogue_glasses.png"
-    : "/img/characters/susie_dialogue.png";
-
-  return (
-    <>
-      <img src={renderOptrion} className="npc" alt="npc" />
-    </>
-  );
-}
-
-function Dialogue({ clickHandler, dialogueHandler, dialogueTexts }) {
-  return (
-    <div className="dialogue">
-      <span> {dialogueTexts[0]} </span>
-      {dialogueTexts.length > 1 ? (
-        <button onClick={dialogueHandler}> next dialogue </button>
-      ) : (
-        <button onClick={clickHandler}> start </button>
-      )}
-    </div>
-  );
-}
-
-function Task({ uncompletedTasks }) {
-  if (uncompletedTasks.length === 0) {
-    return (
-      <>
-        <p className="task"> Все задания выполнены</p>
-      </>
-    );
-  }
-
-  const currentTask = uncompletedTasks[0];
-  return (
-    <>
-      <p key={currentTask.index} className="task">
-        {" "}
-        {currentTask.description}{" "}
-      </p>
-    </>
-  );
-}
-
-function Timer({ time }) {
-  const minutes = Math.trunc(time / 60);
-  const seconds = time % 60;
-  const renderValue =
-    time > 0 ? (
-      <p>
-        {minutes}:{seconds}
-      </p>
-    ) : (
-      <p> Time is out</p>
-    );
-
-  return <>{renderValue}</>;
-}
-
-function Item({ name, imgSrc, position, clickHandler }) {
-  return (
-    <>
-      <img
-        src={imgSrc}
-        style={position}
-        className="object"
-        id={name}
-        onClick={clickHandler}
-        alt="Old women img"
-      />
-    </>
-  );
 }
