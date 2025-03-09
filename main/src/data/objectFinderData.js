@@ -1,6 +1,6 @@
 export const items = [
   {
-    name: "grey square",
+    name: "glasses",
     src: "https://placehold.co/100x100/grey/white?text=glasses",
     position: {
       position: "absolute",
@@ -9,8 +9,8 @@ export const items = [
     },
   },
   {
-    name: "green square",
-    src: "https://placehold.co/100x100/green/white?text=cat",
+    name: "recipe book",
+    src: "https://placehold.co/100x100/green/white?text=recip_book",
     position: {
       position: "absolute",
       top: 10 + "%",
@@ -30,14 +30,16 @@ export const items = [
 export const tasks = [
   {
     index: 0,
-    description: "Найди серый квадрат",
-    itemName: "grey square",
+    description:
+      "Before we start, I need my glasses because I can’t see you well right now.",
+    itemName: "glasses",
     isCompleted: false,
   },
   {
     index: 1,
-    description: "Найди зеленый квадрат",
-    itemName: "green square",
+    description:
+      "Oh, you are quite an attractive little boy! Remind me again, why are you here? Ohh, yeah, your waterboard. I think I heard something from my friend, but honestly, I’m too busy to manage that right now. I need to switch off the stove and do chores at the same time. Oh, I have an idea! Could you help me find some things while my dinner is cooking? Let's start with my recip book",
+    itemName: "recipe book",
     isCompleted: false,
   },
   {
@@ -47,4 +49,10 @@ export const tasks = [
     isCompleted: false,
   },
 ];
-export const dialogueTexts = ["text1", "text2", "text3", "text4", "text5"];
+export const dialogueTexts = [
+  "Oh, hello, sweetie. What’s your name again? Hmm, what an unusual name!",
+  "So, what are you looking for here? Oh, your surfboard? Sure, it’s an extremely useful thing for school. I remember myself at your age in school—I was such a beautiful girl.",
+  "text3",
+  "text4",
+  "text5",
+];

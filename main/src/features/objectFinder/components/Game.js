@@ -24,19 +24,25 @@ export default function Game() {
     }
   }, [state]);
   useEffect(() => {
+    if (uncompletedTasks.length === 2) {
+      setState("game");
+    }
+    stopGame();
+  }, [uncompletedTasks, currentTime]);
+  function stopGame() {
     if (uncompletedTasks.length > 0 && currentTime === 0) {
       setState("fail");
       clearInterval(intervalId.current);
       intervalId.current = null;
     }
     if (uncompletedTasks.length === 0 && currentTime > 0) {
-      setState("game"); // временно сменил чтобы проверить отображения текста про выполненность заданий
+      setState("success"); // временно сменил чтобы проверить отображения текста про выполненность заданий
       clearInterval(intervalId.current);
       intervalId.current = null;
     }
-  }, [uncompletedTasks, currentTime]);
+  }
   function startGame() {
-    setState("game");
+    setState("firstStep");
   }
 
   // Логика диалогов
@@ -46,18 +52,11 @@ export default function Game() {
   }
 
   // Логика выполнения задания
-  // const [history, setHistory] = useState(tasks.slice(0));
   const currentTask = uncompletedTasks[0];
   function clickHandler(itm) {
     if (currentTask.itemName === itm.name) {
       const updatedList = uncompletedTasks.slice(1);
       setUncompletedTasks(updatedList);
-      // setHistory((prevHistory) => {
-      //   let updatedHistory = prevHistory;
-      //   let index = prevHistory.length - uncompletedTasks.length;
-      //   updatedHistory[index].isCompleted = true;
-      //   return updatedHistory;
-      // });
     }
   }
 
@@ -83,6 +82,29 @@ export default function Game() {
               dialogueHandler={nextDialogueText}
             />
           </div>
+        </div>
+      </>
+    );
+  }
+  if (state === "firstStep") {
+    return (
+      <>
+        <div className="room">
+          <div className="npcAndDialogue">
+            <Npc />
+            <Task currentTask={currentTask} clickHandler={clickHandler} />
+          </div>
+          {items.map((itm) => (
+            <Item
+              key={itm.name}
+              name={itm.name}
+              imgSrc={itm.src}
+              position={itm.position}
+              clickHandler={() => {
+                clickHandler(itm);
+              }}
+            />
+          ))}
         </div>
       </>
     );

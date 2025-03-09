@@ -16,9 +16,10 @@
 
 .dialogue, .task {
     position: absolute;
-    left: 17%;
-    bottom: 15%;
+    left: 15%;
+    top: 78%;
     color: white;
+    max-width: 40%;
 }
 
 .timer{
