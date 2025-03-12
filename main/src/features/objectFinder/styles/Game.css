@@ -1,0 +1,38 @@
+.room {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-image: url('http://localhost:3000/img/rooms/susie_room.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.npcAndText {
+    position: relative;
+    min-height: 400px;
+    top: 46%;
+}
+
+.dialogue, .task {
+    position: absolute;
+    left: 15%;
+    top: 78%;
+    color: white;
+    max-width: 40%;
+}
+
+.timer{
+    position: relative;
+    width: 30px;
+    top: 32%;
+    left: 50%;
+}
+
+.npc {
+    position: absolute;
+    width: 800px;
+}
+
+
+

@@ -1,6 +1,6 @@
 .menuScreen {
     height: 100vh; /* Высота блока — 100% от высоты экрана */
-    background-image: url('../../public/img/mainScreen.png');
+    background-image: url('../../public/img/screens/mainScreen.png');
     background-position: bottom;
 }
 

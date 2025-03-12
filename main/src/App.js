@@ -1,10 +1,8 @@
-import './App.css';
+import "./assets/styles/App.css";
 import ScreenHandler from "./ScreenHandler";
 
 function App() {
-    return (
-        <ScreenHandler/>
-    )
+  return <ScreenHandler />;
 }
 
 export default App;
