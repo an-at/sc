@@ -10,7 +10,7 @@ export const items = [
     founded: false,
   },
   {
-    name: "false recipe book",
+    name: "book 1",
     src: "https://placehold.co/100x100/red/white?text=recipe_book",
     position: {
       position: "absolute",
@@ -20,7 +20,7 @@ export const items = [
     },
   },
   {
-    name: "false recipe book",
+    name: "book 2",
     src: "https://placehold.co/100x100/black/white?text=recipe_book",
     position: {
       position: "absolute",
@@ -30,7 +30,7 @@ export const items = [
     },
   },
   {
-    name: "false recipe book",
+    name: "book 3",
     src: "https://placehold.co/100x100/yellow/white?text=recipe_book",
     position: {
       position: "absolute",
@@ -40,7 +40,7 @@ export const items = [
     },
   },
   {
-    name: "false recipe book",
+    name: "book 4",
     src: "https://placehold.co/100x100/brown/white?text=recipe_book",
     position: {
       position: "absolute",

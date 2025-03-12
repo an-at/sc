@@ -7,7 +7,9 @@ export default function Dialogue({
     <div className="dialogue">
       <span> {dialogueTexts[0]} </span>
       {dialogueTexts.length > 1 ? (
-        <button onClick={dialogueHandler}> next dialogue </button>
+        <button onClick={dialogueHandler} className="dialogueButton">
+          next dialogue
+        </button>
       ) : (
         <button onClick={clickHandler}> start </button>
       )}
